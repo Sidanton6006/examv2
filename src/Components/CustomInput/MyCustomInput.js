@@ -49,11 +49,7 @@ export default function MyCustomInput({placeholderText}) {
       sx={{ 
       }}
     >
-      <FormControl variant="standard" sx={{
-        ":nth-child(x2)":{
-          marginLeft: '27px'
-        }        
-      }}>
+      <FormControl variant="standard">
         <BootstrapInput id="bootstrap-input" placeholder={placeholderText}/>
       </FormControl>
     </Box>
