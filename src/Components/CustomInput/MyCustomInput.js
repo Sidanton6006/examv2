@@ -41,7 +41,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function MyCustomInput({placeholderText}) {
+export default function MyCustomInput({placeholderText, onSearch}) {
   return (
     <Box
       component="form"
@@ -50,7 +50,7 @@ export default function MyCustomInput({placeholderText}) {
       }}
     >
       <FormControl variant="standard">
-        <BootstrapInput id="bootstrap-input" placeholder={placeholderText}/>
+        <BootstrapInput id="bootstrap-input" onChange={onSearch} placeholder={placeholderText}/>
       </FormControl>
     </Box>
   );

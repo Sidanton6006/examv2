@@ -5,11 +5,24 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 
-const steps = ["", "", "", "", "", "", "", "", "", ""];
-const text = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+export default function MyStepper({ test }) {
+  const steps = [];
+  const tests = [];
+  let indexer = 1;
+  const maxMark = 12;
+  let myMark = 0;
+  let myAnswers = [];
+  let myAnswer = [];
 
-export default function MyStepper() {
+  test.asks.forEach(elem => {
+      steps.push(indexer++);
+      tests.push(elem)
+  })
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -30,16 +43,39 @@ export default function MyStepper() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+    AddAnswer();
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const CheckAnswer = (value) => {    
+    const myAnswer = value;
+    let ret;
+    test.asks[activeStep].answers.map((answer) => {
+        if(myAnswer === answer.text){
+            if(answer.isCorrect){
+                ret = true;
+            }
+            else{
+                ret = false;
+            }
+        }
+    })
+    return ret;
+  }
+
+  const AddAnswer = () => {
+    myAnswers.push('1');
+    console.log(myAnswers);
+  }
+  const GetRadioValue = (e) => {
+    myAnswer = CheckAnswer(e.target.value)
+  }
+
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
       throw new Error("You can't skip a step that isn't optional.");
     }
 
@@ -83,7 +119,16 @@ export default function MyStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>{text[activeStep]}</Typography>
+          <Typography sx={{ mt: 2, mb: 1 }}>{
+            <RadioGroup>
+                <Typography sx={{ mt: 2, mb: 1 }}>
+                    {tests[activeStep].ask}
+                </Typography> 
+                {tests[activeStep].answers.map((answer) => {
+                    return <FormControlLabel value={answer.text.toLowerCase()} control={<Radio onChange={GetRadioValue} />} label={answer.isCorrect ? answer.text+'*' : answer.text} />
+                })} 
+            </RadioGroup>
+          }</Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"

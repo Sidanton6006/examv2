@@ -1,11 +1,16 @@
 import React from 'react';
 
-class passingTest extends React.Component{
-    render(){
+import { useSelector} from 'react-redux';
+import BasicCard from '../../Components/Card/BasicCard';
+import MyStepper from '../../Components/Stepper/Stepper';
+
+const PassingTest = () => {
+    const username = useSelector(state => state.TestReducer.username);
+
+    const currentTest = useSelector(state => state.TestReducer.currentTest);
         return(
-            <h1>You passing the test</h1>
-        );
-    }
+                <MyStepper test={currentTest} />
+            );
 }
 
-export default passingTest;
+export default PassingTest;
